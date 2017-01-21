@@ -20,6 +20,7 @@ else
   sed -i 's/#en_GB.UTF/en_GB.UTF/g' /etc/locale.gen && \
   locale-gen && \
   pacman -S openssh grub-bios linux-headers linux-lts linux-lts-headers && \
-  grub-install --target=i386-pc --recheck /dev/sda
+  grub-install --target=i386-pc --recheck /dev/sda && \
+  passwd
   
 fi
