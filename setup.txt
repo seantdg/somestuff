@@ -1,13 +1,25 @@
-loadkeys uk.map.gz && \
-parted --script /dev/sda -- mklabel msdos \
-mkpart primary ext4 1 30GiB \
-mkpart primary linux-swap 30GiB 32GiB \
-mkpart primary ext4 32GiB -1 \
-set 1 boot on && \
-mkfs.ext4 /dev/sda1 && \
-mkfs.ext4 /dev/sda3 && \
-mount /dev/sda1 /mnt && \
-mkdir /mnt/home && \
-mount /dev/sda3 /mnt/home && \
-pacstrap /mnt base && \
-genfstab -U /mnt >> /mnt/etc/fstab
+if [ true ]; then
+
+  loadkeys uk.map.gz && \
+  parted --script /dev/sda -- mklabel msdos \
+  mkpart primary ext4 1 30GiB \
+  mkpart primary linux-swap 30GiB 32GiB \
+  mkpart primary ext4 32GiB -1 \
+  set 1 boot on && \
+  mkfs.ext4 /dev/sda1 && \
+  mkfs.ext4 /dev/sda3 && \
+  mount /dev/sda1 /mnt && \
+  mkdir /mnt/home && \
+  mount /dev/sda3 /mnt/home && \
+  pacstrap /mnt base && \
+  genfstab -U /mnt >> /mnt/etc/fstab
+
+else
+
+  #arch-chroot /mnt - remember to do this!
+  sed -i 's/#en_GB.UTF/en_GB.UTF/g' /etc/locale.gen && \
+  locale-gen && \
+  pacman -S openssh grub-bios linux-headers linux-lts linux-lts-headers && \
+  grub-install --target=i386-pc --recheck /dev/sda
+  
+fi
