@@ -1,10 +1,12 @@
 loadkeys uk.map.gz && \
 parted --script /dev/sda -- mklabel msdos \
-mkpart primary ext4 1MiB 30GiB \
+mkpart primary ext4 1 30GiB \
 mkpart primary linux-swap 30GiB 32GiB \
-mkpart primary ext4 32GiB -1s \
+mkpart primary ext4 32GiB -1 \
 set 1 boot on && \
-mount /dev/sda1 && \
+mkfs.ext4 /dev/sda1 && \
+mkfs.ext4 /dev/sda3 && \
+mount /dev/sda1 /mnt && \
 mkdir /mnt/home && \
 mount /dev/sda3 /mnt/home && \
 pacstrap /mnt base && /
